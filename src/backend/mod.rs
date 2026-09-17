@@ -96,10 +96,10 @@ pub trait Backend {
     fn reopen(&mut self) -> Result<()>;
 }
 
-#[cfg(all(feature = "wayland", target_os = "linux"))]
+#[cfg(all(feature = "wayland", any(target_os = "linux", target_os = "freebsd")))]
 pub mod wayland;
 
-#[cfg(all(feature = "x11", target_os = "linux"))]
+#[cfg(all(feature = "x11", any(target_os = "linux", target_os = "freebsd")))]
 pub mod x11;
 
 #[cfg(target_os = "macos")]

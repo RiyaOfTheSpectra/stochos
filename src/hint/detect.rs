@@ -42,9 +42,9 @@ pub fn select_detector() -> anyhow::Result<Box<dyn HintDetector>> {
 }
 
 fn atspi_detector() -> anyhow::Result<Box<dyn HintDetector>> {
-    #[cfg(target_os = "linux")]
+    #[cfg(any(target_os = "linux", target_os = "freebsd"))]
     {
-        Ok(Box::new(super::atspi::AtspiHintDetector))
+        return Ok(Box::new(super::atspi::AtspiHintDetector));
     }
     #[cfg(not(target_os = "linux"))]
     {
@@ -66,7 +66,7 @@ impl HintDetector for AutoDetector {
     }
 
     fn detect(&self, backend: &mut dyn Backend) -> anyhow::Result<DetectorOutput> {
-        #[cfg(target_os = "linux")]
+        #[cfg(any(target_os = "linux", target_os = "freebsd"))]
         {
             match super::atspi::AtspiHintDetector.detect(backend) {
                 Ok(output) if output.candidates.len() >= CASCADE_MIN_ATSPI_TARGETS => {

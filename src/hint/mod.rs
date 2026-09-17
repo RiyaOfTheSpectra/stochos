@@ -7,11 +7,11 @@
 //! first to the second. Everything downstream of a detector (remapping,
 //! scoring, deduplication, label assignment) is shared and lives here.
 
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "freebsd"))]
 mod atspi;
 #[cfg(target_os = "macos")]
 mod ax;
-#[cfg(target_os = "linux")]
+#[cfg(any(target_os = "linux", target_os = "freebsd"))]
 mod compositor;
 mod cv;
 mod detect;

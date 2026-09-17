@@ -58,14 +58,14 @@ fn main() -> anyhow::Result<()> {
 
     let initial = args.initial_mode();
 
-    #[cfg(all(feature = "wayland", target_os = "linux"))]
+    #[cfg(all(feature = "wayland", any(target_os = "linux", target_os = "freebsd")))]
     if std::env::var_os("WAYLAND_DISPLAY").is_some() {
         if let Ok(mut b) = backend::wayland::WaylandBackend::new() {
             return app::run(&mut b, initial);
         }
     }
 
-    #[cfg(all(feature = "x11", target_os = "linux"))]
+    #[cfg(all(feature = "x11", any(target_os = "linux", target_os = "freebsd")))]
     if std::env::var_os("DISPLAY").is_some() {
         let mut b = backend::x11::X11Backend::new()?;
         return app::run(&mut b, initial);
